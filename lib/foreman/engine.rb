@@ -261,29 +261,6 @@ class Foreman::Engine
     File.expand_path(options[:root] || Dir.pwd)
   end
 
-  # Get the port for a given process and offset
-  #
-  # @param [Foreman::Process] process   A +Process+ associated with this engine
-  # @param [Fixnum]           instance  The instance of the process
-  #
-  # @returns [Fixnum] port  The port to use for this instance of this process
-  #
-  def port_for(process, instance, base=nil)
-    if base
-      base + (@processes.index(process.process) * 100) + (instance - 1)
-    else
-      base_port + (@processes.index(process) * 100) + (instance - 1)
-    end
-  end
-
-  # Get the base port for this foreman instance
-  #
-  # @returns [Fixnum] port  The base port
-  #
-  def base_port
-    (options[:port] || env["PORT"] || ENV["PORT"] || 5000).to_i
-  end
-
   # deprecated
   def environment
     env
@@ -365,7 +342,6 @@ private
         reader, writer = create_pipe
         begin
           pid = process.run(:output => writer, :env => {
-            "PORT" => port_for(process, n).to_s,
             "PS" => name_for_index(process, n)
           })
           writer.puts "started with pid #{pid}"

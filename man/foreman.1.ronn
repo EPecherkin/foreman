@@ -47,39 +47,6 @@ The following options control how the application is run:
 `foreman run` is used to run one-off commands using the same environment
 as your defined processes.
 
-## EXPORTING
-
-`foreman export` is used to export your application to another process
-management format.
-
-A location to export can be passed as an argument. This argument may be
-either required or optional depending on the export format.
-
-The following options control how the application is run:
-
-  * `-a`, `--app`:
-    Use this name rather than the application's root directory name as the
-    name of the application when exporting.
-
-  * `-m`, `--formation`:
-    Specify the number of each process type to run. The value passed in
-    should be in the format `process=num,process=num`
-
-  * `-l`, `--log`:
-    Specify the directory to place process logs in.
-
-  * `-p`, `--port`:
-    Specify which port to use as the base for this application. Should be
-    a multiple of 1000.
-
-  * `-t`, `--template`:
-    Specify an alternate template to use for creating export files.
-    See <https://github.com/ddollar/foreman/tree/master/data/export> for examples.
-
-  * `-u`, `--user`:
-    Specify the user the application should be run as. Defaults to the
-    app name
-
 ## GLOBAL OPTIONS
 
 These options control all modes of foreman's operation.
@@ -97,55 +64,6 @@ These options control all modes of foreman's operation.
     containing directory will be assumed to be the root directory of the
     application.
 
-## EXPORT FORMATS
-
-foreman currently supports the following output formats:
-
-  * bluepill
-
-  * inittab
-
-  * launchd
-
-  * runit
-
-  * supervisord
-
-  * systemd
-
-  * upstart
-
-## INITTAB EXPORT
-
-Will export a chunk of inittab-compatible configuration:
-
-    # ----- foreman example processes -----
-    EX01:4:respawn:/bin/su - example -c 'PORT=5000 bundle exec thin start >> /var/log/web-1.log 2>&1'
-    EX02:4:respawn:/bin/su - example -c 'PORT=5100 bundle exec rake jobs:work >> /var/log/job-1.log 2>&1'
-    # ----- end foreman example processes -----
-
-## SYSTEMD EXPORT
-
-Will create a series of systemd scripts in the location you specify. Scripts
-will be structured to make the following commands valid:
-
-  `systemctl start appname.target`
-
-  `systemctl stop appname-processname.target`
-
-  `systemctl restart appname-processname-3.service`
-
-## UPSTART EXPORT
-
-Will create a series of upstart scripts in the location you specify. Scripts
-will be structured to make the following commands valid:
-
-  `start appname`
-
-  `stop appname-processname`
-
-  `restart appname-processname-3`
-
 ## PROCFILE
 
 A Procfile should contain both a name for the process and the command used
@@ -159,13 +77,8 @@ You can validate your Procfile format using the `check` command:
 
     $ foreman check
 
-The special environment variables `$PORT` and `$PS` are available within the
-Procfile. `$PORT` is the port selected for that process. `$PS` is the name of
-the process for the line.
-
-The `$PORT` value starts as the base port as specified by `-p`, then increments
-by 100 for each new process line. Multiple instances of the same process are
-assigned `$PORT` values that increment by 1.
+The special environment variable `$PS` are available within the
+Procfile. `$PS` is the name of the process for the line.
 
 ## ENVIRONMENT
 

@@ -2,7 +2,7 @@ $:.unshift File.expand_path("../lib", __FILE__)
 require "foreman/version"
 
 Gem::Specification.new do |gem|
-  gem.name     = "foreman"
+  gem.name     = "foremine"
   gem.license  = "MIT"
   gem.version  = Foreman::VERSION
 
@@ -13,7 +13,7 @@ Gem::Specification.new do |gem|
 
   gem.description = gem.summary
 
-  gem.executables = "foreman"
+  gem.executables = "foremine"
   gem.files = Dir["**/*"].select { |d| d =~ %r{^(README|bin/|data/|ext/|lib/|spec/|test/)} }
   gem.files << "man/foreman.1"
 end
